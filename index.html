@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Access</title>
+<meta name="description" content="social access">
+<head>
+<link href="./css/style.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.js"></script>
+</head>
+<body>
+<div id="app" class = "vueApp">
+  <v-app>
+        <div class="wrapper">
+          <v-icon class="bgIcon">mdi-account-details</v-icon>
+              <div class="main basic-card" v-if="currentView === 'enterUsername'">
+                    <h2 class="instruction"><v-icon style="padding: 0px 5px 3px 0px; color:white">mdi-account-details</v-icon>Social Access</h2>
+                    <div class="enterUsername" style="width: 100%">
+                        <div class="enterUsername-content height-form">
+                            <li style="list-style-type: none; margin-left: 15px">Username</li>
+                            <div style="margin-left: 15px; font-size: small; color: gray;">Facebook username. Eg.: facebook.com/<span style="text-decoration: underline;">something</span></div>
+
+                            <div class="enterUsername-input-wrapper">
+                            <input ref="usernameInput"
+                                   type="text"
+                                   v-model="inputUsername"
+                                   class="enterUsername-input"
+                                   v-on:keyup.enter="submitHeight()">
+                            </div>
+                       </div>
+                       <div class="enterUsername-content height-form">
+                        <li style="list-style-type: none; margin-left: 15px">E-mail address</li>
+                        <div style="margin-left: 15px; font-size: small; color: gray;">E-mail address to receive info</div>
+
+                        <div class="enterUsername-input-wrapper">
+                        <input ref="emailInput"
+                               type="email"
+                               required
+                               v-model="inputEmail"
+                               class="enterUsername-input"
+                               v-on:keyup="validateEmail">
+                               <button class="submit-btn"
+                                           v-on:click="submit()"
+                                           v-bind:class="{'disabled': !inputUsername || !inputEmail || !emailValid }">
+                                           <span>Next</span>
+                                    </button>
+                        </div>
+                   </div>
+                    </div>
+              </div>
+              <div class="main basic-card" v-if="currentView === 'payment'">
+                <div class="summary">
+                  <div>{{inputUsername}}</div>
+                    <div>{{inputEmail}}</div>
+                   <div>{{orderId}}</div>
+                </div>
+                <h2 class="instruction"><v-icon style="padding: 0px 5px 3px 0px; color:white">mdi-account-details</v-icon>Social Access</h2>
+                <div class="payment" style="width: 100%">
+                    <img class="qr" src="./src/qr.svg" style="width: 28%; padding:15px; padding-left: 0px; margin-bottom: 100px"></img>
+                    <div class="bitcoin">
+                      <div class="instruction" style="font-size: smaller; border-bottom: none; color: #3f3f3f">Send the exact amount of <span style="font-weight: bold;">BTC</span> to the given address</div>
+                      <div class="amountLabel">{{segWasIschDiPrice}} BTC</div>
+                      <div class="aproxInUsd">≈ 30.00 USD</div>
+                      <div class="address">
+                        <div class="string" id="copyClipboard">{{address}}</div>
+                        <button class="copy-btn" id="copyButton" v-on:click="copy()" ><v-icon style="color:white; padding: 0px 6px 0px 6px;" >mdi-content-copy</v-icon></button>
+                      </div>
+                      <div class="timer">
+                      <template>
+                        <v-progress-linear v-model="timePercentage"></v-progress-linear>
+                      </template>
+                      <div id="countdown" class="countdown">0{{minutes}}:{{seconds}} mins left to pay your order</div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="main basic-card" v-if="currentView === 'loading'">
+                <h2 class="instruction"><v-icon style="padding: 0px 5px 3px 0px; color:white">mdi-account-details</v-icon>Social Access</h2>
+                <div class="loading">
+                  <template>
+                    <v-progress-circular style="align-self: center" indeterminate color="primary"></v-progress-linear>
+                  </template>
+                </div>
+
+              </div>
+          <div style="position: absolute;
+          bottom: 22px;
+          font-size: small;
+          color: gray">
+            I haven't slept since I woke up.</div>
+    </v-app>
+</div>
+
+<script src="./js/index.js">
+</script>
+<script>
+window.addEventListener("load", function(event) {
+ var vueApp = document.querySelector("#app");
+ vueApp.style.display = "block";
+});
+</script>
+</body>
